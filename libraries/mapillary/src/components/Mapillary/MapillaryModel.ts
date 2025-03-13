@@ -196,23 +196,28 @@ export default class MapillaryModel extends ComponentModelBase<MapillaryModelPro
     // https://forum.mapillary.com/t/web-app-blocked-by-cors-policy-mapillary/5357
     // https://forum.mapillary.com/t/cors-error-when-requesting-coverage-vector-tiles/5303
 
-    // async moveCloseToPosition(latitude: number, longitude: number):
-    // Promise<void> {try {const url =
-    // `https://tiles.mapillary.com/maps/vtp/mly1_public/2/17/${latitude}/${longitude}?access_token=${this.mapillaryKey}`;
-    // const response = await fetch(url); const data = await response.json();
-    // const imgKey = data?.features?.[0]?.properties?.key;
+    async moveCloseToPosition(
+        latitude: number,
+        longitude: number
+    ): Promise<void> {
+        try {
+            const url = `https://tiles.mapillary.com/maps/vtp/mly1_public/2/17/${latitude}/${longitude}?access_token=${this.mapillaryKey}`;
+            const response = await fetch(url);
+            const data = await response.json();
+            const imgKey = data?.features?.[0]?.properties?.key;
 
-    //         if (imgKey) {
-    //             await this.mapillary.moveTo(imgKey);
-    //             this.updating = false;
-    //         } else {
-    //             this.updating = false;
-    //             this._activateCover();
-    //         }
-    //     } catch {
-    //         this.updating = false;
-    //         this._activateCover();
-    //     }
+            if (imgKey) {
+                await this.mapillary.moveTo(imgKey);
+                this.updating = false;
+            } else {
+                this.updating = false;
+                this._activateCover();
+            }
+        } catch {
+            this.updating = false;
+            this._activateCover();
+        }
+    }
 
     protected override async _onDestroy(): Promise<void> {
         await super._onDestroy();

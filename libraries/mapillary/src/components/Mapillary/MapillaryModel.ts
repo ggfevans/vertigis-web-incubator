@@ -192,10 +192,6 @@ export default class MapillaryModel extends ComponentModelBase<MapillaryModelPro
         });
     }
 
-    // TODO: Bring back when CORS issue is resolved.
-    // https://forum.mapillary.com/t/web-app-blocked-by-cors-policy-mapillary/5357
-    // https://forum.mapillary.com/t/cors-error-when-requesting-coverage-vector-tiles/5303
-
     async moveCloseToPosition(
         latitude: number,
         longitude: number
@@ -204,9 +200,11 @@ export default class MapillaryModel extends ComponentModelBase<MapillaryModelPro
             const url = `https://tiles.mapillary.com/maps/vtp/mly1_public/2/17/${latitude}/${longitude}?access_token=${this.mapillaryKey}`;
             const response = await fetch(url);
             const data = await response.json();
-            const imgKey = data?.features?.[0]?.properties?.key;
+            const imgKey = data?.features?.[0]?.properties?.key as
+                | string
+                | undefined;
 
-            if (imgKey) {
+            if (typeof imgKey === "string") {
                 await this.mapillary.moveTo(imgKey);
                 this.updating = false;
             } else {

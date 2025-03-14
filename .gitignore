@@ -6,3 +6,4 @@ package-lock.json
 !viewer/build/index.html
 !viewer/build/_*
 .yarn
+libraries/mapillary/src/components/Mapillary/vertigis-web-incubator.code-workspace
